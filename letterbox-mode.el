@@ -1,11 +1,11 @@
-;;; letterbox-mode.el --- hide sensitive text on a buffer -*- lexical-binding: t -*-
+;;; letterbox-mode.el --- hide sensitive text on a buffer
 
 ;; Copyright (C) 2014  Free Software Foundation, Inc.
 
 ;; Author: Fernando Leboran <f.leboran@gmail.com>
 ;; URL: http://github.com/pacha64/letterbox-mode
 ;; Version: 0.3
-;; Keywords: box-drawing, privacy, password, sensitive
+;; Keywords: password, convenience
 ;; URL: http://www.github.com/pacha64/letterbox-mode
 
 ;; This program is free software; you can redistribute it and/or modify
