@@ -1,4 +1,4 @@
-;;; ascii-art-to-unicode.el --- a small artist adjunct -*- lexical-binding: t -*-
+;;; letterbox-mode.el --- hide sensitive text on a buffer -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2014  Free Software Foundation, Inc.
 
@@ -97,3 +97,5 @@
 	(remove-overlays (point-min) (point-max) 'category 'letterbox)))
 
 (provide 'letterbox-mode)
+
+;;; letterbox-mode.el ends here
