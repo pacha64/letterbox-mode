@@ -42,6 +42,9 @@
 
 ;;; Code:
 
+(defvar letterbox-current-text nil)
+(defvar letterbox-is-visible t)
+
 (define-minor-mode letterbox-mode
   "Letterbox text in current buffer, select region and press <C-x l> to letterbox, press <C-x t> to toggle letterbox visibility, press <C-x d> to remove all active letterboxes."
   :init-value nil
@@ -54,9 +57,6 @@
   (setq letterbox-current-text nil)
   (setq letterbox-is-visible t)
   (remove-overlays (point-min) (point-max) 'category 'letterbox))
-
-(defvar letterbox-current-text nil)
-(defvar letterbox-is-visible t)
 
 (defface letterbox-face
   '(t (:background (face-attribute 'default :foreground) :foreground (face-attribute 'default :foreground)))
@@ -90,11 +90,12 @@
 
 (defun letterbox-refresh-overlays()
   (if (and letterbox-is-visible letterbox-current-text)
-	  (progn (dolist (letterbox-list letterbox-current-text)
-			   (progn (setq overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list))))
-					  (overlay-put overlay-helper 'category 'letterbox)
-					  (overlay-put overlay-helper 'face 'letterbox-face))))
-	(remove-overlays (point-min) (point-max) 'category 'letterbox)))
+      (progn
+	(dolist (letterbox-list letterbox-current-text)
+	  (let ((overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list)))))
+	    (overlay-put overlay-helper 'category 'letterbox)
+	    (overlay-put overlay-helper 'face 'letterbox-face))))
+    (remove-overlays (point-min) (point-max) 'category 'letterbox)))
 
 (provide 'letterbox-mode)
 
