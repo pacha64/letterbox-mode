@@ -7,6 +7,7 @@
 ;; Version: 0.3
 ;; Keywords: password, convenience
 ;; URL: http://www.github.com/pacha64/letterbox-mode
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
