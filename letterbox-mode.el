@@ -42,6 +42,9 @@
 
 ;;; Code:
 
+(defvar letterbox-current-text nil)
+(defvar letterbox-is-visible t)
+
 (define-minor-mode letterbox-mode
   "Letterbox text in current buffer, select region and press <C-x l> to letterbox, press <C-x t> to toggle letterbox visibility, press <C-x d> to remove all active letterboxes."
   :init-value nil
