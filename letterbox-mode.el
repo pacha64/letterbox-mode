@@ -58,9 +58,6 @@
   (setq letterbox-is-visible t)
   (remove-overlays (point-min) (point-max) 'category 'letterbox))
 
-(defvar letterbox-current-text nil)
-(defvar letterbox-is-visible t)
-
 (defface letterbox-face
   '(t (:background (face-attribute 'default :foreground) :foreground (face-attribute 'default :foreground)))
   "Letterbox mode face.")
@@ -93,11 +90,12 @@
 
 (defun letterbox-refresh-overlays()
   (if (and letterbox-is-visible letterbox-current-text)
-	  (progn (dolist (letterbox-list letterbox-current-text)
-			   (progn (setq overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list))))
-					  (overlay-put overlay-helper 'category 'letterbox)
-					  (overlay-put overlay-helper 'face 'letterbox-face))))
-	(remove-overlays (point-min) (point-max) 'category 'letterbox)))
+      (progn
+	(dolist (letterbox-list letterbox-current-text)
+	  (let ((overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list)))))
+	    (overlay-put overlay-helper 'category 'letterbox)
+	    (overlay-put overlay-helper 'face 'letterbox-face))))
+    (remove-overlays (point-min) (point-max) 'category 'letterbox)))
 
 (provide 'letterbox-mode)
 
