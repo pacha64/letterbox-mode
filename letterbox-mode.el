@@ -1,4 +1,4 @@
-;;; letterbox-mode.el --- hide sensitive text on a buffer
+;;; letterbox-mode.el --- hide sensitive text on a buffer -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2014  Free Software Foundation, Inc.
 
@@ -42,6 +42,7 @@
 
 ;;; Code:
 
+;;;###autoload
 (define-minor-mode letterbox-mode
   "Letterbox text in current buffer, select region and press <C-x l> to letterbox, press <C-x t> to toggle letterbox visibility, press <C-x d> to remove all active letterboxes."
   :init-value nil
@@ -58,10 +59,16 @@
 (defvar letterbox-current-text nil)
 (defvar letterbox-is-visible t)
 
+(defgroup letterbox nil
+  "Letterbox text in current buffer"
+  :group 'convenience)
+
 (defface letterbox-face
   '(t (:background (face-attribute 'default :foreground) :foreground (face-attribute 'default :foreground)))
-  "Letterbox mode face.")
+  "Letterbox mode face."
+  :group 'letterbox)
 
+;;;###autoload
 (defun letterbox-add()
   (interactive)
   (if (and mark-active (not (= 0 (- (region-beginning) (region-end)))))
@@ -74,12 +81,14 @@
 			 (letterbox-refresh-overlays))
 	(message "No region active to add text to a letterbox.")))
 
+;;;###autoload
 (defun letterbox-remove()
   (interactive)
   (setq letterbox-current-text nil)
   (letterbox-refresh-overlays)
   (message "All letterboxes removed"))
 
+;;;###autoload
 (defun letterbox-toggle()
   (interactive)
   (setq letterbox-is-visible (not letterbox-is-visible))
@@ -97,5 +106,4 @@
 	(remove-overlays (point-min) (point-max) 'category 'letterbox)))
 
 (provide 'letterbox-mode)
-
 ;;; letterbox-mode.el ends here
