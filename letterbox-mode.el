@@ -49,10 +49,10 @@
   :init-value nil
   :lighter " Letterbox"
   :keymap (let ((map (make-sparse-keymap)))
-			(define-key map (kbd "C-c a") 'letterbox-add)
-			(define-key map (kbd "C-c t") 'letterbox-toggle)
-			(define-key map (kbd "C-c r") 'letterbox-remove)
-			map)
+            (define-key map (kbd "C-c a") 'letterbox-add)
+            (define-key map (kbd "C-c t") 'letterbox-toggle)
+            (define-key map (kbd "C-c r") 'letterbox-remove)
+            map)
   (setq letterbox-current-text nil)
   (setq letterbox-is-visible t)
   (remove-overlays (point-min) (point-max) 'category 'letterbox))
@@ -73,14 +73,14 @@
 (defun letterbox-add()
   (interactive)
   (if (and mark-active (not (= 0 (- (region-beginning) (region-end)))))
-	  (progn (if (equal nil letterbox-current-text)
-				 (setq letterbox-current-text (list (list (region-beginning) (region-end))))
-			   (add-to-list 'letterbox-current-text (list (region-beginning) (region-end)) t))
-			 (deactivate-mark)
-			 (if (not letterbox-is-visible)
-				 (letterbox-toggle))
-			 (letterbox-refresh-overlays))
-	(message "No region active to add text to a letterbox.")))
+      (progn (if (equal nil letterbox-current-text)
+                 (setq letterbox-current-text (list (list (region-beginning) (region-end))))
+               (add-to-list 'letterbox-current-text (list (region-beginning) (region-end)) t))
+             (deactivate-mark)
+             (if (not letterbox-is-visible)
+                 (letterbox-toggle))
+             (letterbox-refresh-overlays))
+    (message "No region active to add text to a letterbox.")))
 
 ;;;###autoload
 (defun letterbox-remove()
@@ -94,17 +94,20 @@
   (interactive)
   (setq letterbox-is-visible (not letterbox-is-visible))
   (if letterbox-is-visible
-	  (message "Letterbox enabled")
-	(message "Letterbox disabled"))
+      (message "Letterbox enabled")
+    (message "Letterbox disabled"))
   (letterbox-refresh-overlays))
 
 (defun letterbox-refresh-overlays()
   (if (and letterbox-is-visible letterbox-current-text)
-	  (progn (dolist (letterbox-list letterbox-current-text)
-			   (progn (setq overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list))))
-					  (overlay-put overlay-helper 'category 'letterbox)
-					  (overlay-put overlay-helper 'face 'letterbox-face))))
-	(remove-overlays (point-min) (point-max) 'category 'letterbox)))
+      (dolist (letterbox-list letterbox-current-text)
+        (setq overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list))))
+        (overlay-put overlay-helper 'category 'letterbox)
+        (overlay-put overlay-helper 'face 'letterbox-face))
+    (remove-overlays (point-min) (point-max) 'category 'letterbox)))
 
 (provide 'letterbox-mode)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
 ;;; letterbox-mode.el ends here
