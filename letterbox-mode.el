@@ -89,14 +89,12 @@ visibility, press <C-x d> to remove all active letterboxes."
 (defun letterbox-add()
   (interactive)
   (if (and mark-active (not (= 0 (- (region-beginning) (region-end)))))
-      (progn (if (equal nil letterbox-current-text)
-                 (setq letterbox-current-text (list (list (region-beginning)
-                                                          (region-end))))
-               (add-to-list 'letterbox-current-text (list (region-beginning)
-                                                          (region-end)) t))
+      (progn (add-to-list 'letterbox-current-text
+                          (list (region-beginning) (region-end))
+                          t)
              (deactivate-mark)
-             (if (not letterbox-is-visible)
-                 (letterbox-toggle))
+             (unless letterbox-is-visible
+               (letterbox-toggle))
              (letterbox-refresh-overlays))
     (message "No region active to add text to a letterbox.")))
 
