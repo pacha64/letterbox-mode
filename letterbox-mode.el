@@ -25,27 +25,42 @@
 ;;; Commentary:
 
 ;; Letterbox-mode is a simple minor mode to add letterboxing to sensitive text.
-;; Select a region of text you want to censor and call M-x letterbox-add, the selected region will be letterboxed/censored.
-;; Call M-x letterbox-remove to remove all letterboxes, or M-x to toggle the letterboxes (without removing them).
-;; Some use cases:
 ;;
-;;	 This is a buffer with some sensitive information. 123456 is the password for my bank account, and qwerty is my account name. please don't read it.
+;; Select a region of text you want to censor and call M-x
+;; letterbox-add, the selected region will be letterboxed/censored.
+;; Call M-x letterbox-remove to remove all letterboxes, or M-x to
+;; toggle the letterboxes (without removing them).  Some use cases:
 ;;
-;; Select "123456" and call letterbox-add, you will see that part letterboxed:
+;;	 This is a buffer with some sensitive information. 123456 is
+;;	 the password for my bank account, and qwerty is my account
+;;	 name. please don't read it.
 ;;
-;;	 This is a buffer with some sensitive information. ██████ is the password for my bank account, and qwerty is my account name. please don't read it.
+;; Select "123456" and call letterbox-add, you will see that part
+;; letterboxed:
 ;;
-;; Select "qwerty" and call letterbox-add again, you will see that part letterboxed as well:
+;;	 This is a buffer with some sensitive information. ██████ is
+;;	 the password for my bank account, and qwerty is my account
+;;	 name. please don't read it.
 ;;
-;;	 This is a buffer with some sensitive information. ██████ is the password for my bank account, and ██████ is my account name. please don't read it.
+;; Select "qwerty" and call letterbox-add again, you will see that
+;; part letterboxed as well:
 ;;
-;; Call letterbox-toggle to hide/show the sensitive text, or letterbox-remove to remove them.
+;;	 This is a buffer with some sensitive information. ██████ is
+;;	 the password for my bank account, and ██████ is my account
+;;	 name. please don't read it.
+;;
+;; Call letterbox-toggle to hide/show the sensitive text, or
+;; letterbox-remove to remove them.
 
 ;;; Code:
 
 ;;;###autoload
 (define-minor-mode letterbox-mode
-  "Letterbox text in current buffer, select region and press <C-x l> to letterbox, press <C-x t> to toggle letterbox visibility, press <C-x d> to remove all active letterboxes."
+  "Mode for hiding sensitive text on a buffer.
+
+After activating this mode in current buffer, select region and
+press <C-x l> to letterbox, press <C-x t> to toggle letterbox
+visibility, press <C-x d> to remove all active letterboxes."
   :init-value nil
   :lighter " Letterbox"
   :keymap (let ((map (make-sparse-keymap)))
@@ -65,7 +80,8 @@
   :group 'convenience)
 
 (defface letterbox-face
-  '(t (:background (face-attribute 'default :foreground) :foreground (face-attribute 'default :foreground)))
+  '(t (:background (face-attribute 'default :foreground)
+       :foreground (face-attribute 'default :foreground)))
   "Letterbox mode face."
   :group 'letterbox)
 
@@ -74,8 +90,10 @@
   (interactive)
   (if (and mark-active (not (= 0 (- (region-beginning) (region-end)))))
       (progn (if (equal nil letterbox-current-text)
-                 (setq letterbox-current-text (list (list (region-beginning) (region-end))))
-               (add-to-list 'letterbox-current-text (list (region-beginning) (region-end)) t))
+                 (setq letterbox-current-text (list (list (region-beginning)
+                                                          (region-end))))
+               (add-to-list 'letterbox-current-text (list (region-beginning)
+                                                          (region-end)) t))
              (deactivate-mark)
              (if (not letterbox-is-visible)
                  (letterbox-toggle))
@@ -101,7 +119,8 @@
 (defun letterbox-refresh-overlays()
   (if (and letterbox-is-visible letterbox-current-text)
       (dolist (letterbox-list letterbox-current-text)
-        (setq overlay-helper (make-overlay (car letterbox-list) (car (cdr letterbox-list))))
+        (setq overlay-helper (make-overlay (car letterbox-list)
+                                           (cadr letterbox-list)))
         (overlay-put overlay-helper 'category 'letterbox)
         (overlay-put overlay-helper 'face 'letterbox-face))
     (remove-overlays (point-min) (point-max) 'category 'letterbox)))
