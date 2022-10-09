@@ -79,8 +79,8 @@ visibility, press <C-x d> to remove all active letterboxes."
   :group 'convenience)
 
 (defface letterbox-face
-  '(t (:background (face-attribute 'default :foreground)
-       :foreground (face-attribute 'default :foreground)))
+  `((t :background ,(face-attribute 'default :foreground)
+       :foreground ,(face-attribute 'default :foreground)))
   "Letterbox mode face."
   :group 'letterbox)
 
